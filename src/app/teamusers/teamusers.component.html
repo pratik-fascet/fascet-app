@@ -1,0 +1,42 @@
+<ActionBar title="Your Team" class="action-bar"></ActionBar>
+
+<StackLayout>
+  <ListView
+    [items]="users"
+    (itemTap)="onItemTap($event)"
+    class="list-group"
+    height="100%"
+  >
+    <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
+      <GridLayout columns="128, *" rows="auto, auto, auto">
+        <Image
+          src="{{ 'data:image/png;base64,' + item.ProfilePicBase64 }}"
+          row="0"
+          col="0"
+          rowSpan="3"
+          width="90"
+          height="90"
+          class="profilePic"
+        ></Image>
+        <Label
+          [text]="item.DisplayName"
+          class="list-group-item"
+          row="0"
+          col="1"
+        ></Label>
+        <Label
+          [text]="item.Email"
+          class="list-group-item"
+          row="1"
+          col="1"
+        ></Label>
+        <Label
+          [text]="item.Title"
+          class="list-group-item"
+          row="2"
+          col="1"
+        ></Label>
+      </GridLayout>
+    </ng-template>
+  </ListView>
+</StackLayout>

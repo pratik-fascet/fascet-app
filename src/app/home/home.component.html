@@ -1,0 +1,70 @@
+<ActionBar [title]="currentTabName" class="action-bar">
+  <ActionItem
+    (tap)="doTeamUsers()"
+    ios.position="right"
+    android.position="popup"
+    visibility="{{ !isEmployee ? 'visible' : 'collapsed' }}"
+  >
+    <GridLayout columns="auto" rows="auto" class="action-item m-r-10">
+      <Image src="font://&#xf0c0;" class="fas"></Image>
+    </GridLayout>
+  </ActionItem>
+  <ActionItem
+    (tap)="doSwitchUsers()"
+    ios.position="right"
+    android.position="popup"
+    visibility="{{ isEmployee ? 'visible' : 'collapsed' }}"
+  >
+    <GridLayout columns="auto" rows="auto" class="action-item m-r-10">
+      <Image src="font://&#xf0c0;" class="fas"></Image>
+    </GridLayout>
+  </ActionItem>
+  <ActionItem (tap)="doLogoff()" ios.position="right" android.position="popup">
+    <GridLayout columns="auto" rows="auto" class="action-item m-r-10">
+      <Image src="font://&#xf2f5;" class="fas"></Image>
+    </GridLayout>
+  </ActionItem>
+</ActionBar>
+
+<BottomNavigation
+  id="bottomNav"
+  automationText="tabNavigation"
+  selectedIndex="0"
+>
+  <TabStrip>
+    <TabStripItem>
+      <Image src="font://&#xf200;" class="fas"></Image>
+      <Label text="Dashboard" style="font-size: 10"></Label>
+    </TabStripItem>
+    <TabStripItem>
+      <Image src="font://&#xf4ad;" class="fas"></Image>
+      <Label
+        text="Messages ({{ totals.TotalUnreadMessages }})"
+        style="font-size: 10"
+      ></Label>
+    </TabStripItem>
+    <TabStripItem>
+      <Image src="font://&#xf07b;" class="fas"></Image>
+      <Label text="Documents" style="font-size: 10"></Label>
+    </TabStripItem>
+  </TabStrip>
+
+  <TabContentItem class="content">
+    <page-router-outlet
+      name="dundasTab"
+      actionBarVisibility="auto"
+    ></page-router-outlet>
+  </TabContentItem>
+  <TabContentItem class="content">
+    <page-router-outlet
+      name="messagesTab"
+      actionBarVisibility="auto"
+    ></page-router-outlet>
+  </TabContentItem>
+  <TabContentItem class="content">
+    <page-router-outlet
+      name="documentsTab"
+      actionBarVisibility="auto"
+    ></page-router-outlet>
+  </TabContentItem>
+</BottomNavigation>

@@ -1,0 +1,18 @@
+<ActionBar title="Switch User To ..." class="action-bar"></ActionBar>
+
+<StackLayout>
+  <TextField [(text)]="filter" hint="Enter filter"></TextField>
+  <ListView
+    [items]="users"
+    (itemTap)="onItemTap($event)"
+    class="list-group"
+    height="100%"
+  >
+    <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
+      <StackLayout>
+        <Label [text]="item.DisplayName" class="list-group-item"></Label>
+        <Label [text]="item.Email" class="list-group-item"></Label>
+      </StackLayout>
+    </ng-template>
+  </ListView>
+</StackLayout>

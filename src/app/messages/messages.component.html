@@ -1,0 +1,56 @@
+<StackLayout>
+  <Button
+    class="btn btn-green"
+    text="Send New Message"
+    (tap)="composeMessage($event)"
+  ></Button>
+  <ListView
+    [items]="messages"
+    (itemTap)="onItemTap($event)"
+    class="list-group"
+    height="100%"
+  >
+    <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
+      <GridLayout
+        columns="auto, auto, *"
+        rows="auto, auto, auto"
+        class="message-container"
+      >
+        <Image
+          row="0"
+          rowSpan="2"
+          col="0"
+          src="{{ (item.NewThreadCount === 0) ? 'font://&#xf2b6;' : 'font://&#xf0e0;'}}"
+          class="fas message-icon"
+        ></Image>
+        <Label
+          row="0"
+          col="1"
+          [text]="item.DisplayDate"
+          class="message-time"
+        ></Label>
+        <Label
+          row="0"
+          col="2"
+          [text]="item.From"
+          class="message-author"
+        ></Label>
+        <Label
+          row="1"
+          col="1"
+          colSpan="2"
+          text="{{ 'To: ' + item.To }}"
+          class="message-to"
+        ></Label>
+        <Label
+          row="2"
+          col="1"
+          colSpan="2"
+          [text]="item.Subject"
+          textWrap="true"
+          class="message-title"
+        ></Label>
+      </GridLayout>
+    </ng-template>
+  </ListView>
+</StackLayout>

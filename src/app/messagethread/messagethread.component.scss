@@ -1,0 +1,57 @@
+.thread-title {
+  padding: 5;
+  font-weight: bold;
+  font-size: 16;
+  background-color: #eee;
+  margin-bottom: 10;
+}
+.message-container {
+  padding: 12;
+}
+.message-author {
+  font-size: 11;
+  color: #333;
+  margin-left: 4;
+  text-transform: uppercase;
+}
+.message-date {
+  font-size: 11;
+  color: #4ac1fa;
+}
+.message-to {
+  padding: 0 4 4 0;
+  font-size: 11;
+  color: #333;
+}
+.message-body {
+  font-size: 14;
+  color: #333;
+  padding-bottom: 10;
+}
+.message-keyboard-space {
+  height: 300;
+}
+.pnl-reply {
+  margin: 10;
+}
+.lbl-reply {
+  background-color: #3f4444;
+  color: white;
+  padding: 0 100 0 10;
+}
+.btn-reply {
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
+}
+.btn-send:disabled {
+  color: grey;
+}
+.txt-reply {
+  border-color: #333;
+  border-width: 2;
+  border-radius: 2;
+  border-style: solid;
+  margin: 0;
+  padding: 10;
+}

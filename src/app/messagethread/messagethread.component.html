@@ -1,0 +1,27 @@
+<ActionBar [title]="contact" class="action-bar">
+  <ActionItem ios.position="right" android.position="popup">
+    <GridLayout columns="auto" rows="auto" class="action-item m-r-10">
+      <Button text="Send" (tap)="onReply($event)" isEnabled="{{ replyText !== '' }}" class="btn-reply"></Button>
+    </GridLayout>
+  </ActionItem>
+</ActionBar>
+
+<ScrollView>
+  <StackLayout>
+    <Label [text]="title" class="thread-title" textWrap="true"></Label>
+    <GridLayout columns="*" rows="auto, *" class="pnl-reply">
+      <Label text="Reply ..." row="0" col="0" class="lbl-reply"></Label>
+      <TextView hint="Reply ..." [text]="replyText" (textChange)="onTextChange($event)" class="txt-reply" row="1"
+        col="0">
+      </TextView>
+    </GridLayout>
+    <StackLayout *ngFor="let item of messages">
+      <GridLayout columns="auto *" rows="auto auto auto" class="message-container">
+        <Label [text]="item.DisplayDate" row="0" col="0" class="message-date"></Label>
+        <Label [text]="item.From" row="0" col="1" class="message-author"></Label>
+        <Label row="1" col="0" colSpan="2" text="{{ 'To: ' + item.To }}" class="message-to"></Label>
+        <Label [text]="item.Body" row="2" col="0" colSpan="2" textWrap="true" class="message-body"></Label>
+      </GridLayout>
+    </StackLayout>
+  </StackLayout>
+</ScrollView>

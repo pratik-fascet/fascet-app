@@ -1,0 +1,12 @@
+{
+  "applePlatform": "ios",
+  "appId": "com.sageworthapps.portal",
+  "displayName": "Sageworth",
+  "sku": "ALPHASPRING_SAGEWORTH_1",
+  "teamName": "Sageworth Trust Company",
+  "teamId": "122517702",
+  "devUrl": "devsage.alphaspring.com",
+  "stagingUrl": "qasage.alphaspring.com",
+  "productionUrl": "portal.sageworthapps.com",
+  "gitUrl": "https://github.com/AlphaCentrix/sageworthapps-certs.git"
+}

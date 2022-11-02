@@ -1,0 +1,18 @@
+<StackLayout class="maintenance-block">
+  <Image src="res://loginlogo" class="logo"></Image>
+  <Label
+    text="The client portal is temporarily unavailable due to scheduled system maintenance."
+    class="maintenance-text"
+    textWrap="true"
+  ></Label>
+  <Label
+    text="We apologize for any inconvenience."
+    class="maintenance-text"
+    textWrap="true"
+  ></Label>
+  <Button
+    class="btn btn-primary m-t-20"
+    text="Close"
+    (tap)="doClose($event)"
+  ></Button>
+</StackLayout>

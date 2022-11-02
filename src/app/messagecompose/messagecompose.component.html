@@ -1,0 +1,55 @@
+<ActionBar title="Create New Message ..." class="action-bar">
+  <ActionItem ios.position="right" android.position="popup">
+    <GridLayout columns="auto" rows="auto" class="action-item m-r-10">
+      <Button
+        text="Send"
+        (tap)="send($event)"
+        isEnabled="{{ !isBusy && isOK }}"
+        class="btn-send"
+      ></Button>
+    </GridLayout>
+  </ActionItem>
+</ActionBar>
+
+<ScrollView>
+  <StackLayout>
+    <StackLayout visibility="{{ showAutoComplete ? 'visible' : 'collapsed' }}">
+      <RadAutoCompleteTextView
+        #autocomplete
+        hint="to ..."
+        noResultsText="Can't find anyone or any role"
+        completionMode="Contains"
+        minimumCharactersToSearch="2"
+        suggestMode="Suggest"
+        displayMode="Tokens"
+        layoutMode="Wrap"
+        (tokenAdded)="changed()"
+        (tokenRemoved)="changed()"
+      >
+        <SuggestionView tkAutoCompleteSuggestionView suggestionViewHeight="300">
+          <ng-template tkSuggestionItemTemplate let-item="item">
+            <StackLayout orientation="horizontal" margin="5">
+              <Label [text]="item.name"></Label>
+            </StackLayout>
+          </ng-template>
+        </SuggestionView>
+      </RadAutoCompleteTextView>
+    </StackLayout>
+    <TextField
+      class="form-input m-t-10"
+      hint="Subject"
+      id="txtSubject"
+      returnKeyType="next"
+      [isEnabled]="!isBusy"
+      [(ngModel)]="messageSubject"
+      (ngModelChange)="changed()"
+    ></TextField>
+    <TextView
+      hint="Message ..."
+      [(ngModel)]="messageBody"
+      [isEnabled]="!isBusy"
+      (ngModelChange)="changed()"
+    >
+    </TextView>
+  </StackLayout>
+</ScrollView>

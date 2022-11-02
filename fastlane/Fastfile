@@ -1,0 +1,260 @@
+fastlane_version '2.170.0'
+fastlane_require 'dotenv'
+fastlane_require 'fileutils'
+fastlane_require 'dir'
+
+default_platform(:android)
+
+before_all do
+  # Dotenv.overload '.env.secret'
+  # Dotenv.overload '.env.ios'
+end
+
+desc 'test lane'
+lane :test do
+  print 'TEST SUCCESSFUL!'
+end
+
+platform :ios do
+  before_all do
+    UI.important 'Loading iOS environment variables'
+    Dotenv.load '.env.ios'
+  end
+
+  lane :prepare do |options|
+    client = options[:client]
+
+    if Dir.exist?('../platforms')
+      FileUtils.remove_dir('../platforms')
+     end
+   
+     client_data = read_json(
+      json_path: "./AppVariants/#{client}/data.json"
+     )
+     client_secrets = read_json(
+       json_path: "./AppVariants/#{client}/data.secret.json"
+     )
+
+     print "Building: " + client_data[:appId] + "\n"
+
+     ENV["MATCH_PASSWORD"] = client_secrets[:certsKey]
+     ENV["FASTLANE_USER"] = client_secrets[:appleId]
+     ENV["FASTLANE_PASSWORD"] = client_secrets[:applePassword]
+   
+     version = github_version
+     up_to_date = store_is_up_to_date(client_data, client_secrets, version)
+   
+     set_variant(client_data, version, 3)
+     sh('tns', 'prepare', 'ios', '--release', '--clean', '--env.production')
+
+     update_code_signing_settings(
+      use_automatic_signing: false,
+      targets: 'all',
+      team_id: client_data[:teamId],
+      code_sign_identity: 'Apple Distribution',
+      bundle_identifier: client_data[:appId],
+      profile_name: 'match AppStore com.sageworthapps.portal'
+     )
+
+     match(
+      type: 'appstore',
+      readonly: false,
+      generate_apple_certs: true,
+      skip_provisioning_profiles: false,
+      app_identifier: client_data[:appId],
+      username: client_data[:appleId],
+      team_id: client_data[:teamId],
+      team_name: client_data[:teamName],
+      storage_mode: 'git',
+      git_url: client_data[:gitUrl],
+      git_branch: 'master',
+      git_full_name: 'AlphaCentrix Dev',
+      git_user_email: client_data[:appleId],
+      keychain_password: client_secrets[:localPassword],
+      force: true,
+      force_for_new_devices: true,
+      platform: client_data[:applePlatform],
+      verbose: true
+    )
+
+  end
+
+  lane :build do |options|
+    client = options[:client]
+    client_data = read_json(
+      json_path: "./AppVariants/#{client}/data.json"
+     )
+     client_secrets = read_json(
+       json_path: "./AppVariants/#{client}/data.secret.json"
+     )
+    print "Building: " + client_data[:appId] + "\n"
+
+    build_app(
+      scheme: 'fascetapp',
+      configuration: 'Release',
+      workspace: './platforms/ios/fascetapp.xcworkspace',
+      export_method: 'app-store'
+    )
+
+    if options[:upload]
+      upload_to_testflight(
+        username: client_secrets[:appleId],
+        app_identifier: client_data[:appId],
+        app_platform: client_data[:applePlatform],
+        apple_id: client_secrets[:appleId],
+        ipa: 'platforms/ios/build/fascetapp.ipa',
+        team_id: client_data[:teamId],
+        team_name: client_data[:teamName],
+        dev_portal_team_id: client_data[:teamName]
+      )
+    end
+  end
+
+  desc 'Only run this to register your devices with the various Dev Portals for the apps. Make sure you have created a Devicefile'
+  lane :sync_all_development do
+    app_variants.each do |client|
+
+      client_data = read_json(
+        json_path: "./AppVariants/#{client}/data.json"
+      )
+      client_secrets = read_json(
+        json_path: "./AppVariants/#{client}/data.secret.json"
+      )
+
+      register_devices(
+        devices_file: 'fastlane/Devicefile',
+        username: client_secrets[:appleId],
+        platform: client_data[:applePlatform],
+        team_id: client_data[:teamId],
+        team_name: client_data[:teamName]
+      )
+
+      match(
+        type: 'development',
+        readonly: false,
+        app_identifier: client_data[:appId],
+        username: client_data[:appleId],
+        team_id: client_data[:teamId],
+        team_name: client_data[:teamName],
+        storage_mode: 'git',
+        git_url: client_data[:gitUrl],
+        git_branch: 'master',
+        git_user_email: client_data[:appleId],
+        keychain_password: client_secrets[:localPassword],
+        force: true,
+        force_for_new_devices: true,
+        platform: client_data[:applePlatform],
+        verbose: true
+      )
+    end
+  end
+
+end
+
+platform :android do
+  before_all do
+    # UI.important 'Loading Android environment variables'
+    # Dotenv.load '.env.android'
+  end
+
+  lane :prepare do |options|
+    client = options[:client]
+
+    if Dir.exist?('../platforms')
+      FileUtils.remove_dir('../platforms')
+     end
+   
+     client_data = read_json(
+      json_path: "./AppVariants/#{client}/data.json"
+     )
+     client_secrets = read_json(
+       json_path: "./AppVariants/#{client}/data.secret.json"
+     )
+
+     print "Building: " + client_data[:appId] + "\n"
+
+     ENV["FASTLANE_USER"] = client_secrets[:appleId]
+     ENV["FASTLANE_PASSWORD"] = client_secrets[:applePassword]
+   
+     version = github_version
+   
+     set_variant(client_data, version, 3)
+     sh('tns', 'prepare', 'android', '--release', '--clean', '--env.production')
+  end
+end
+
+def app_variants
+  Dir.entries('../AppVariants').select do |entry|
+    File.directory? File.join('../AppVariants', entry) and !['.', '..'].include?(entry)
+  end
+end
+
+def set_variant(client_data, version, target)
+  app_id = client_data[:appId]
+  display_name = client_data[:displayName]
+
+  version_arr = version.split('.').map(&:to_i)
+  short_version = "#{version_arr[0]}.#{version_arr[1]}"
+  version = "#{version}.#{target}"
+
+  update_plist(
+    plist_path: './App_Resources/iOS/Info.plist',
+    block: proc do |plist|
+      plist['CFBundleVersion'] = version
+      plist['CFBundleShortVersionString'] = short_version
+      plist['CFBundleDisplayName'] = display_name
+      plist['CFBundleName'] = display_name
+    end
+  )
+
+  # TODO: fix the below code to change nativescript.config.ts
+  # package_json = read_json(
+  #   json_path: './package.json'
+  # )
+  # package_json[:nativescript][:id] = app_id
+  # puts(package_json[:nativescript][:id])
+  # write_json(
+  #   hash: package_json,
+  #   file_path: './package.json'
+  # )
+
+  app_target_url = ''
+  case target
+  when 1
+    app_target_url = client_data[:devUrl]
+  when 2
+    app_target_url = client_data[:stagingUrl]
+  when 3
+    app_target_url = client_data[:productionUrl]
+  end
+
+  File.open('../src/app/shared/globals.ts', 'w') do |f|
+    f.write "export const SiteUrl: string = \"#{app_target_url}\";\n"
+  end
+end
+
+def copy_assets(client)
+  FileUtils.copy_entry "../AppVariants/#{client}/App_Resources", '../App_Resources', false, false, true
+end
+
+def store_is_up_to_date(client_data, client_secrets, version)
+  tf = latest_testflight_build_number(
+    app_identifier: client_data[:appId],
+    username: client_secrets[:appleId],
+    platform: client_data[:applePlatform],
+    team_id: client_data[:teamId],
+    team_name: client_data[:teamName],
+    live: true
+  )
+  version_arr = tf.split('.').map(&:to_i)
+  tfs = "#{version_arr[0]}.#{version_arr[1]}.#{version_arr[2]}"
+
+  tfs == version
+end
+
+def github_version
+  version = last_git_tag pattern: 'v*'
+  version[0] = '' # cut the leading "v" off
+  version
+end
+

@@ -1,0 +1,49 @@
+<StackLayout>
+  <StackLayout class="form form-content">
+    <StackLayout class="loginlogo">
+      <Image src="res://loginlogo"></Image>
+    </StackLayout>
+    <Label class="lbl lbl-light m-t-20" text="Email"></Label>
+    <TextField
+      class="form-input m-t-10"
+      hint="you@gmail.com"
+      id="txtEmail"
+      keyboardType="email"
+      autocorrect="false"
+      autocapitalizationType="none"
+      returnKeyType="next"
+      [isEnabled]="!isBusy"
+      [(ngModel)]="email"
+    ></TextField>
+    <Label class="lbl lbl-light m-t-20" text="Password"></Label>
+    <TextField
+      class="form-input m-t-10"
+      hint="password"
+      secure="true"
+      autocorrect="false"
+      id="txtPassword"
+      autocapitalizationType="none"
+      returnKeyType="next"
+      [isEnabled]="!isBusy"
+      [(ngModel)]="password"
+    ></TextField>
+    <ActivityIndicator [busy]="isBusy"></ActivityIndicator>
+    <GridLayout rows="auto" columns="*, auto">
+      <Label text="Save Login" row="0" col="0" class="m-l-20"></Label>
+      <Switch
+        [checked]="saveLogin"
+        (checkedChange)="onCheckedChange($event)"
+        row="0"
+        col="1"
+      ></Switch>
+    </GridLayout>
+    <StackLayout class="m-t-20">
+      <Button
+        class="btn btn-primary m-t-20"
+        text="Login"
+        [isEnabled]="!isBusy"
+        (tap)="doLogin($event)"
+      ></Button>
+    </StackLayout>
+  </StackLayout>
+</StackLayout>

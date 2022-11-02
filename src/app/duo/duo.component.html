@@ -1,0 +1,46 @@
+<StackLayout>
+  <StackLayout class="form-header">
+    <Label class="lbl h2 m-t-5 m-b-5" text="Duo Confirmation"></Label>
+  </StackLayout>
+  <StackLayout class="form form-content">
+    <Label text="{{ displayName }}" textWrap="true"></Label>
+    <ListPicker
+      [items]="devices"
+      textField="DisplayName"
+      valueField="deviceId"
+      visibility="{{ this.devices.length > 0 ? 'visible' : 'collapsed' }}"
+      [isEnabled]="!isBusy"
+      (selectedIndexChange)="onSelectedIndexChanged($event)"
+    ></ListPicker>
+    <StackLayout>
+      <Button
+        class="btn btn-green"
+        text="Send Me a Push"
+        visibility="{{ canPush ? 'visible' : 'collapsed' }}"
+        [isEnabled]="!isBusy"
+        (tap)="doPush($event)"
+      ></Button>
+      <Button
+        class="btn btn-green"
+        text="Call Me"
+        visibility="{{ canPhone ? 'visible' : 'collapsed' }}"
+        [isEnabled]="!isBusy"
+        (tap)="doPhone($event)"
+      ></Button>
+      <Button
+        class="btn btn-green"
+        text="Send Me an SMS"
+        visibility="{{ canSMS ? 'visible' : 'collapsed' }}"
+        [isEnabled]="!isBusy"
+        (tap)="doSMS($event)"
+      ></Button>
+      <Button
+        class="btn btn-green"
+        text="Enter a Passcode"
+        visibility="{{ canMobileOTP ? 'visible' : 'collapsed' }}"
+        [isEnabled]="!isBusy"
+        (tap)="doCode($event)"
+      ></Button>
+    </StackLayout>
+  </StackLayout>
+</StackLayout>

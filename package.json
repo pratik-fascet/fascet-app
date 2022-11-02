@@ -1,0 +1,69 @@
+{
+  "description": "Financial App",
+  "license": "SEE LICENSE IN <your-license-filename>",
+  "repository": "<fill-your-repository-here>",
+  "scripts": {
+    "lint": "tslint \"src/**/*.ts\"",
+    "watch_android": "npm-watch run_android",
+    "watch_ios": "npm-watch run_ios",
+    "run_android": "tns run android",
+    "run_ios": "tns run ios"
+  },
+  "dependencies": {
+    "@angular/animations": "~11.0.0",
+    "@angular/common": "~11.0.0",
+    "@angular/compiler": "~11.0.0",
+    "@angular/core": "~11.0.0",
+    "@angular/forms": "~11.0.0",
+    "@angular/platform-browser": "~11.0.0",
+    "@angular/platform-browser-dynamic": "~11.0.0",
+    "@angular/router": "~11.0.0",
+    "@nativescript/angular": "~11.0.0",
+    "@nativescript/core": "~7.1.0",
+    "@nativescript/theme": "^3.0.1",
+    "moment": "^2.27.0",
+    "nativescript-exit": "^1.0.1",
+    "nativescript-master-technology": "^1.1.3",
+    "nativescript-secure-storage": "^2.6.0",
+    "nativescript-ui-autocomplete": "^7.0.2",
+    "reflect-metadata": "~0.1.12",
+    "rxjs": "^6.4.0",
+    "zone.js": "~0.9.1"
+  },
+  "devDependencies": {
+    "@angular/compiler-cli": "~11.0.0",
+    "@nativescript/ios": "7.2.0",
+    "@nativescript/types": "^7.2.0",
+    "@nativescript/webpack": "~4.0.0",
+    "@ngtools/webpack": "~11.0.0",
+    "codelyzer": "~4.5.0",
+    "css-loader": "^5.0.2",
+    "nativescript-theme-core": "^2.0.24",
+    "npm-watch": "^0.7.0",
+    "sass": "^1.32.8",
+    "sass-loader": "^10.1.1",
+    "tns-android": "7.0.1",
+    "tns-ios": "^6.5.4",
+    "tslint": "~5.19.0",
+    "typescript": "~4.0.0"
+  },
+  "gitHead": "20a65d338ae8f8911087ab6615b89363f864b07b",
+  "readme": "NativeScript Application",
+  "watch": {
+    "run_android": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "ts,html,scss,css",
+      "quiet": false
+    },
+    "run_ios": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "ts,html,scss,css",
+      "quiet": false
+    }
+  },
+  "main": "main.js"
+}

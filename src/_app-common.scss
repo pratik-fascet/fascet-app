@@ -1,0 +1,94 @@
+// Place any CSS rules you want to apply on both iOS and Android here.
+// This is where the vast majority of your CSS code goes.
+
+.action-bar {
+  background-color: $plum;
+}
+
+.btn {
+  color: white;
+  background-color: $plum;
+  font-family: $muli-semibold;
+  font-size: 16;
+  border-radius: 3;
+}
+
+.btn-outline {
+  color: $plum;
+  background-color: transparent;
+  border: 1px solid grey;
+}
+
+.btn-text-only {
+  color: $plum;
+}
+
+.btn-green {
+  background-color: $success-dark;
+}
+
+/* Form */
+
+.form-header {
+  background-color: $plum-form-header-bg;
+  padding: 10;
+}
+
+.form-content {
+  background-color: $plum-form-content-bg;
+  padding: 10;
+}
+
+.form-content-block {
+  border-width: 1;
+  border-radius: 3;
+  border-color: $plum-input-border;
+  background-color: white;
+  width: 90%;
+}
+
+.form-input {
+  border-width: 1;
+  border-color: $plum-input-border;
+  background-color: $background-light;
+  padding: 10;
+  border-radius: 3;
+}
+
+.form-input-required {
+  border-color: $error-light;
+}
+
+/* Label */
+
+.lbl {
+  color: $plum-text;
+  font-family: $muli-semibold;
+}
+
+.lbl-light {
+  color: $plum-text-light;
+  font-size: 15;
+}
+
+.lbl-bold {
+  font-weight: bold;
+}
+
+.lbl-form-required {
+  color: $error-light;
+  font-size: 12;
+}
+
+/* Misc */
+
+.fas {
+  font-family: "Font Awesome 5 Free", fa-solid-900;
+}
+
+.content > Gridlayout {
+  text-align: center;
+  vertical-align: middle;
+  font-size: 24;
+  color: whitesmoke;
+}

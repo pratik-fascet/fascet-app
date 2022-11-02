@@ -1,0 +1,23 @@
+<GridLayout rows="* auto *">
+  <WebView
+    row="0"
+    rowSpan="3"
+    src="{{ webViewSrc }}"
+    (loadStarted)="onLoadStarted($event)"
+    (loadFinished)="onLoadFinished($event)"
+    height="100%"
+    name="dundasView"
+    visibility="{{ showBrowser && !inError ? 'visible' : 'collapsed' }}"
+  >
+  </WebView>
+  <StackLayout row="1" visibility="{{ busy ? 'visible' : 'collapsed' }}">
+    <Label text="Loading ..." class="center-label"></Label>
+    <ActivityIndicator [busy]="busy"></ActivityIndicator>
+  </StackLayout>
+  <StackLayout row="1" visibility="{{ inError ? 'visible' : 'collapsed' }}">
+    <Label text="Error retrieving dashboard data" class="center-label"></Label>
+  </StackLayout>
+  <StackLayout row="1" visibility="{{ empty ? 'visible' : 'collapsed' }}">
+    <Label text="Dashboard empty" class="center-label"></Label>
+  </StackLayout>
+</GridLayout>

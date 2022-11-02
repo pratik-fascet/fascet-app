@@ -1,0 +1,56 @@
+<GridLayout rows="* auto *">
+  <StackLayout row="0" rowSpan="3">
+    <ListView
+      [items]="entries"
+      (itemTap)="onItemTap($event)"
+      class="entry-list"
+      height="100%"
+    >
+      <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
+        <GridLayout
+          columns="48, auto, *"
+          rows="auto, auto"
+          class="entry-container"
+        >
+          <Image
+            row="0"
+            rowSpan="2"
+            col="0"
+            src="{{
+              item.IsFolder
+                ? 'font://&#xf07b;'
+                : item.IsLink
+                ? 'font://&#xf360;'
+                : 'font://&#xf15b;'
+            }}"
+            class="fas entry-icon"
+          ></Image>
+          <Label
+            row="0"
+            col="1"
+            text="{{ item.Pid == -1 ? '' : formatDate(item.LastModified) }}"
+            class="entry-time"
+          ></Label>
+          <Label
+            row="0"
+            col="2"
+            [text]="item.Author"
+            class="entry-author"
+          ></Label>
+          <Label
+            row="1"
+            col="1"
+            colSpan="2"
+            [text]="item.Title"
+            textWrap="true"
+            class="entry-title"
+          ></Label>
+        </GridLayout>
+      </ng-template>
+    </ListView>
+  </StackLayout>
+  <StackLayout row="1" visibility="{{ busy ? 'visible' : 'collapsed' }}">
+    <Label text="Loading ..." class="center-label"></Label>
+    <ActivityIndicator [busy]="busy"></ActivityIndicator>
+  </StackLayout>
+</GridLayout>
